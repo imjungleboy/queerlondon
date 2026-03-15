@@ -169,6 +169,16 @@ export default function VenuesScreen() {
   const [areaFilter, setAreaFilter] = useState<string>('All');
   const [categoryFilter, setCategoryFilter] = useState<string>('All');
 
+  const filteredVenues = venues.filter((v) => {
+    const areaMatch = areaFilter === 'All' || v.area === areaFilter;
+    const catMatch = categoryFilter === 'All' || v.category === categoryFilter;
+    return areaMatch && catMatch;
+  });
+
+  const filteredSaunas = saunas.filter((s) =>
+    areaFilter === 'All' || s.area === areaFilter
+  );
+
   return (
     <View style={styles.container}>
       <Head>
@@ -187,14 +197,24 @@ export default function VenuesScreen() {
         <Text style={styles.pageTitle}>VENUES</Text>
         <Text style={styles.pageSubtitle}>LGBTQ+ bars, clubs & spaces across London</Text>
 
+        <FilterPills options={AREA_FILTERS} active={areaFilter} onSelect={setAreaFilter} />
+        {/* Category filter applies to NIGHTLIFE section only — saunas are filtered by area above */}
+        <FilterPills options={CATEGORY_FILTERS} active={categoryFilter} onSelect={setCategoryFilter} />
+
         <SectionHeading title="NIGHTLIFE" accent={C.orange} />
-        {venues.map((v) => <VenueCard key={v.id} venue={v} />)}
+        {filteredVenues.length === 0
+          ? <Text style={styles.emptyState}>No nightlife venues in this area</Text>
+          : filteredVenues.map((v) => <VenueCard key={v.id} venue={v} />)
+        }
 
         <SectionHeading title="SAUNAS" accent={C.teal} />
         <View style={styles.ageWarning}>
           <Text style={styles.ageWarningText}>18+  ·  Adult venues — please visit responsibly</Text>
         </View>
-        {saunas.map((s) => <SaunaCard key={s.id} sauna={s} />)}
+        {filteredSaunas.length === 0
+          ? <Text style={styles.emptyState}>No saunas in this area</Text>
+          : filteredSaunas.map((s) => <SaunaCard key={s.id} sauna={s} />)
+        }
 
       </ScrollView>
     </View>
@@ -397,6 +417,14 @@ const styles = StyleSheet.create({
     color: C.orange,
     letterSpacing: 0.5,
     textAlign: 'center',
+  },
+
+  emptyState: {
+    fontFamily: F.body,
+    fontSize: 14,
+    color: C.textMuted,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
   },
 
   // ── Filter pills ──
