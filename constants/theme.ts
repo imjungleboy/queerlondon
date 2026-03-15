@@ -1,53 +1,50 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
+// A24 "Queer" film poster colour palette
+export const C = {
+  bg:          '#0D0905',   // near-black with warm brown undertone
+  surface:     '#1A1108',   // deep warm dark — card backgrounds
+  surface2:    '#2A1F12',   // elevated surfaces
+  red:         '#8B1A0E',   // deep cinematic red — primary accent
+  orange:      '#C4581A',   // burnt orange — secondary accent
+  teal:        '#1A3A3A',   // muted teal — used sparingly
+  text:        '#F2EBD9',   // warm off-white
+  textMuted:   '#8A7A65',   // warm grey — secondary text
+  pink:        '#D4506A',   // desaturated dusty rose
+  border:      'rgba(242,235,217,0.08)',
+  borderLight: 'rgba(242,235,217,0.14)',
+};
 
-import { Platform } from 'react-native';
+// Font family names (loaded via @expo-google-fonts)
+export const F = {
+  heading:   'BebasNeue_400Regular',     // structural headings, all-caps
+  script:    'DancingScript_700Bold',    // logo/wordmark only
+  body:      'Inter_400Regular',         // all body copy
+  semibold:  'Inter_600SemiBold',        // buttons, labels
+  bold:      'Inter_700Bold',            // emphasis
+};
 
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
-
+// Keep legacy export shape so existing imports don't break
 export const Colors = {
   light: {
-    text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
+    text: C.text,
+    background: C.bg,
+    tint: C.orange,
+    icon: C.textMuted,
+    tabIconDefault: C.textMuted,
+    tabIconSelected: C.orange,
   },
   dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
+    text: C.text,
+    background: C.bg,
+    tint: C.orange,
+    icon: C.textMuted,
+    tabIconDefault: C.textMuted,
+    tabIconSelected: C.orange,
   },
 };
 
-export const Fonts = Platform.select({
-  ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: 'ui-monospace',
-  },
-  default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
-  },
-  web: {
-    sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-    serif: "Georgia, 'Times New Roman', serif",
-    rounded: "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
-    mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
-  },
-});
+export const Fonts = {
+  sans: F.body,
+  serif: F.script,
+  rounded: F.heading,
+  mono: 'monospace',
+};
