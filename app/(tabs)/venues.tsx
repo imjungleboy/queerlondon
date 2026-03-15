@@ -1,6 +1,7 @@
 import { Image } from 'expo-image';
 import Head from 'expo-router/head';
 import { useRouter } from 'expo-router';
+import { useState } from 'react';
 import { Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -128,9 +129,45 @@ function SectionHeading({ title, accent }: { title: string; accent: string }) {
   );
 }
 
+// ─── Filter pills ──────────────────────────────────────────────────────────────
+const AREA_FILTERS = ['All', 'Soho', 'Vauxhall', 'East London', 'North London', 'South London', 'West End'];
+const CATEGORY_FILTERS = ['All', 'Bar', 'Nightclub', 'Club', 'Pub'];
+
+function FilterPills({
+  options,
+  active,
+  onSelect,
+}: {
+  options: string[];
+  active: string;
+  onSelect: (v: string) => void;
+}) {
+  return (
+    <ScrollView
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      style={styles.pillRow}
+      contentContainerStyle={styles.pillRowContent}>
+      {options.map((opt) => (
+        <TouchableOpacity
+          key={opt}
+          style={[styles.pill, active === opt && styles.pillActive]}
+          onPress={() => onSelect(opt)}
+          activeOpacity={0.8}>
+          <Text style={[styles.pillText, active === opt && styles.pillTextActive]}>
+            {opt}
+          </Text>
+        </TouchableOpacity>
+      ))}
+    </ScrollView>
+  );
+}
+
 // ─── Screen ───────────────────────────────────────────────────────────────────
 export default function VenuesScreen() {
   const insets = useSafeAreaInsets();
+  const [areaFilter, setAreaFilter] = useState<string>('All');
+  const [categoryFilter, setCategoryFilter] = useState<string>('All');
 
   return (
     <View style={styles.container}>
@@ -360,5 +397,33 @@ const styles = StyleSheet.create({
     color: C.orange,
     letterSpacing: 0.5,
     textAlign: 'center',
+  },
+
+  // ── Filter pills ──
+  pillRow: {
+    marginBottom: 4,
+  },
+  pillRowContent: {
+    paddingHorizontal: 16,
+    gap: 8,
+    flexDirection: 'row',
+  },
+  pill: {
+    backgroundColor: C.surface,
+    borderRadius: 20,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+  },
+  pillActive: {
+    backgroundColor: C.orange,
+  },
+  pillText: {
+    fontFamily: F.semibold,
+    fontSize: 11,
+    letterSpacing: 0.5,
+    color: C.textMuted,
+  },
+  pillTextActive: {
+    color: C.bg,
   },
 });
