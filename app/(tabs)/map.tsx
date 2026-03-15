@@ -1,6 +1,6 @@
+import Head from 'expo-router/head';
 import { StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Head from 'expo-router/head';
 
 import { C, F } from '@/constants/theme';
 import MapDisplay from '@/components/map-display';
