@@ -8,6 +8,7 @@ export interface Event {
   description: string;
   imageUrl: string;
   instagram?: string;
+  website?: string;
   tags: string[];
   price?: string;
   ticketUrl?: string;
