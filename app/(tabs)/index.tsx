@@ -1,5 +1,5 @@
-import Head from 'expo-router/head';
 import { Image } from 'expo-image';
+import Head from 'expo-router/head';
 import { useRouter } from 'expo-router';
 import { Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
