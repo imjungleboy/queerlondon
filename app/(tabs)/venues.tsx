@@ -423,7 +423,6 @@ const styles = StyleSheet.create({
     fontFamily: F.body,
     fontSize: 14,
     color: C.textMuted,
-    paddingHorizontal: 16,
     paddingVertical: 12,
   },
 
@@ -432,7 +431,6 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   pillRowContent: {
-    paddingHorizontal: 16,
     gap: 8,
     flexDirection: 'row',
   },

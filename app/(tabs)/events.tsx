@@ -180,12 +180,12 @@ const styles = StyleSheet.create({
   },
 
   pillRow: { marginBottom: 4 },
-  pillRowContent: { paddingHorizontal: 16, gap: 8, flexDirection: 'row' },
+  pillRowContent: { gap: 8, flexDirection: 'row' },
   pill: { backgroundColor: C.surface, borderRadius: 20, paddingHorizontal: 12, paddingVertical: 6 },
   pillActive: { backgroundColor: C.orange },
   pillText: { fontFamily: F.semibold, fontSize: 11, letterSpacing: 0.5, color: C.textMuted },
   pillTextActive: { color: C.bg },
-  emptyState: { fontFamily: F.body, fontSize: 14, color: C.textMuted, paddingHorizontal: 16, paddingVertical: 12 },
+  emptyState: { fontFamily: F.body, fontSize: 14, color: C.textMuted, paddingVertical: 12 },
 
   card: {
     borderRadius: 6,
