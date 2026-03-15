@@ -1,12 +1,19 @@
 import { Image } from 'expo-image';
 import Head from 'expo-router/head';
 import { useRouter } from 'expo-router';
+import { useState } from 'react';
 import { Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { C, F } from '@/constants/theme';
 import { events, type Event } from '@/data/events';
+import { venues } from '@/data/venues';
 
+// ─── Area filter constants ────────────────────────────────────────────────────
+const AREA_FILTERS = ['All', 'Soho', 'Vauxhall', 'East London', 'North London', 'South London', 'West End'];
+const venueAreaMap: Record<string, string | undefined> = Object.fromEntries(venues.map((v) => [v.id, v.area]));
+
+// ─── Event card ───────────────────────────────────────────────────────────────
 function EventCard({ event }: { event: Event }) {
   const router = useRouter();
   return (
@@ -68,8 +75,46 @@ function EventCard({ event }: { event: Event }) {
   );
 }
 
+// ─── Filter pills ──────────────────────────────────────────────────────────────
+function FilterPills({
+  options,
+  active,
+  onSelect,
+}: {
+  options: string[];
+  active: string;
+  onSelect: (v: string) => void;
+}) {
+  return (
+    <ScrollView
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      style={styles.pillRow}
+      contentContainerStyle={styles.pillRowContent}>
+      {options.map((opt) => (
+        <TouchableOpacity
+          key={opt}
+          style={[styles.pill, active === opt && styles.pillActive]}
+          onPress={() => onSelect(opt)}
+          activeOpacity={0.8}>
+          <Text style={[styles.pillText, active === opt && styles.pillTextActive]}>
+            {opt}
+          </Text>
+        </TouchableOpacity>
+      ))}
+    </ScrollView>
+  );
+}
+
 export default function EventsScreen() {
   const insets = useSafeAreaInsets();
+  const [areaFilter, setAreaFilter] = useState<string>('All');
+
+  const filteredEvents = events.filter((e) => {
+    if (areaFilter === 'All') return true;
+    const area = venueAreaMap[e.venueId];
+    return area === areaFilter;
+  });
 
   return (
     <View style={styles.container}>
@@ -91,9 +136,12 @@ export default function EventsScreen() {
 
         <View style={styles.accentLine} />
 
-        {events.map((event) => (
-          <EventCard key={event.id} event={event} />
-        ))}
+        <FilterPills options={AREA_FILTERS} active={areaFilter} onSelect={setAreaFilter} />
+
+        {filteredEvents.length === 0
+          ? <Text style={styles.emptyState}>No events in this area</Text>
+          : filteredEvents.map((event) => <EventCard key={event.id} event={event} />)
+        }
 
       </ScrollView>
     </View>
@@ -130,6 +178,14 @@ const styles = StyleSheet.create({
     borderRadius: 1,
     marginBottom: 4,
   },
+
+  pillRow: { marginBottom: 4 },
+  pillRowContent: { paddingHorizontal: 16, gap: 8, flexDirection: 'row' },
+  pill: { backgroundColor: C.surface, borderRadius: 20, paddingHorizontal: 12, paddingVertical: 6 },
+  pillActive: { backgroundColor: C.orange },
+  pillText: { fontFamily: F.semibold, fontSize: 11, letterSpacing: 0.5, color: C.textMuted },
+  pillTextActive: { color: C.bg },
+  emptyState: { fontFamily: F.body, fontSize: 14, color: C.textMuted, paddingHorizontal: 16, paddingVertical: 12 },
 
   card: {
     borderRadius: 6,
