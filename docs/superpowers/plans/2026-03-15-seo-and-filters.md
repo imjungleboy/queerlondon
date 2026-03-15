@@ -459,7 +459,7 @@ const CATEGORY_FILTERS = ['All', 'Bar', 'Nightclub', 'Club', 'Pub'];
 
 - [ ] **Step 4: Add FilterPills component**
 
-Add this component above `VenuesScreen` in the file:
+Add this component above `VenuesScreen` in the file. `ScrollView`, `TouchableOpacity`, and `Text` are already imported from `react-native` on line 3 — do not add duplicate imports.
 ```tsx
 function FilterPills({
   options,
@@ -570,7 +570,7 @@ In the `<ScrollView>` content, insert the two pill rows between the page subtitl
 <FilterPills options={CATEGORY_FILTERS} active={categoryFilter} onSelect={setCategoryFilter} />
 ```
 
-Both rows appear above the NIGHTLIFE section. The area pill (row 1) filters both sections. The category pill (row 2) filters the NIGHTLIFE section only — this is intentional per spec. Saunas don't have a `category` field, so selecting e.g. "Bar" hides bar-type nightlife venues while saunas remain (area-filtered).
+Both rows appear above the NIGHTLIFE section. The area pill (row 1) filters both sections. The category pill (row 2) filters the NIGHTLIFE section only — this is intentional per spec. Saunas don't have a `category` field, so selecting e.g. "Bar" hides non-matching nightlife venues while saunas remain visible (filtered by area only). There is no additional UI needed to communicate this — the two-section layout makes the scope of each filter self-evident.
 
 Replace `{venues.map((v) => <VenueCard key={v.id} venue={v} />)}` with:
 ```tsx
@@ -666,8 +666,10 @@ import { venues } from '@/data/venues';
 Just above the `EventsScreen` component:
 ```ts
 const AREA_FILTERS = ['All', 'Soho', 'Vauxhall', 'East London', 'North London', 'South London', 'West End'];
-const venueAreaMap = Object.fromEntries(venues.map((v) => [v.id, v.area]));
+const venueAreaMap: Record<string, string | undefined> = Object.fromEntries(venues.map((v) => [v.id, v.area]));
 ```
+
+Note: typed as `Record<string, string | undefined>` so TypeScript correctly understands that indexing with an unknown key (like `''`) may return `undefined`. This avoids strict-mode false positives.
 
 - [ ] **Step 3: Add state and filtered list inside component**
 
@@ -683,7 +685,7 @@ const filteredEvents = events.filter((e) => {
 
 - [ ] **Step 4: Add FilterPills component**
 
-Copy the `FilterPills` component from `app/(tabs)/venues.tsx` into this file (same exact implementation — it is a local component used only in this file, not worth extracting to a shared location for two usages).
+Copy the `FilterPills` component from `app/(tabs)/venues.tsx` into this file (same exact implementation). `ScrollView`, `TouchableOpacity`, and `Text` are already imported from `react-native` in `events.tsx` — do not add duplicate imports.
 
 - [ ] **Step 5: Render pill row and filtered list**
 
